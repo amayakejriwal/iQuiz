@@ -9,6 +9,17 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBAction func ViewQuizCategoriesButtonTouchUpInside(_ sender: Any) {
+        let vc = TableViewController()
+        vc.models = [
+            ("Mathematics", { print("Mathematics") }),
+            ("Marvel Super Heroes", { print("Marvel Super Heroes") }),
+            ("Science", { print("Science") })
+        ]
+        navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
     @IBAction func settingsTouchUpInside(_ sender: Any) {
         // V1: Show the user an alert
         let alert = UIAlertController(title: "Settings", message: "Settings go here.", preferredStyle: .alert)
