@@ -22,7 +22,22 @@ class ViewController: UIViewController {
     
     @objc func showQuizQuestions(_ quizTopic : String) {
         print("quiz name: \(quizTopic)")
+        
+        // create a new game!!
+        
+        let game = Game("\(quizTopic)")
+        
+        guard let qvc = storyboard?.instantiateViewController(identifier: "QuestionVC", creator: { coder in
+            return QuestionViewController(coder: coder, game: game)
+        }) else {
+            fatalError("Failed to load EditUserViewController from storyboard.")
+        }
+
+        navigationController?.pushViewController(qvc, animated: true)
+            
     }
+    
+    
     
     @IBAction func settingsTouchUpInside(_ sender: Any) {
         // V1: Show the user an alert
