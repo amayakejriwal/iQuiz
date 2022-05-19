@@ -16,6 +16,9 @@
 		852FC5AB2826340600EA034E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FC5AA2826340600EA034E /* TableViewController.swift */; };
 		8596008E283385F2002C0E24 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8596008D283385F2002C0E24 /* FinishedViewController.swift */; };
 		85960090283386ED002C0E24 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8596008F283386ED002C0E24 /* Game.swift */; };
+		8596009228362CA8002C0E24 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8596009128362CA7002C0E24 /* SettingsViewController.swift */; };
+		859600942836CB46002C0E24 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859600932836CB45002C0E24 /* Reachability.swift */; };
+		859600962836E012002C0E24 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 859600952836E010002C0E24 /* Settings.bundle */; };
 		85AA92DE28318E2B006BD523 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AA92DD28318E2B006BD523 /* QuestionViewController.swift */; };
 		85AA92E028319243006BD523 /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85AA92DF28319243006BD523 /* AnswerViewController.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +35,9 @@
 		852FC5AA2826340600EA034E /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		8596008D283385F2002C0E24 /* FinishedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
 		8596008F283386ED002C0E24 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		8596009128362CA7002C0E24 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		859600932836CB45002C0E24 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		859600952836E010002C0E24 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		85AA92DD28318E2B006BD523 /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		85AA92DF28319243006BD523 /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,12 +74,15 @@
 			children = (
 				8596008F283386ED002C0E24 /* Game.swift */,
 				852FC596282461D500EA034E /* AppDelegate.swift */,
+				859600932836CB45002C0E24 /* Reachability.swift */,
 				852FC598282461D500EA034E /* SceneDelegate.swift */,
 				852FC59A282461D500EA034E /* ViewController.swift */,
 				852FC5AA2826340600EA034E /* TableViewController.swift */,
 				85AA92DD28318E2B006BD523 /* QuestionViewController.swift */,
 				85AA92DF28319243006BD523 /* AnswerViewController.swift */,
+				8596009128362CA7002C0E24 /* SettingsViewController.swift */,
 				8596008D283385F2002C0E24 /* FinishedViewController.swift */,
+				859600952836E010002C0E24 /* Settings.bundle */,
 				852FC59C282461D500EA034E /* Main.storyboard */,
 				852FC59F282461DF00EA034E /* Assets.xcassets */,
 				852FC5A1282461DF00EA034E /* LaunchScreen.storyboard */,
@@ -140,6 +149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				859600962836E012002C0E24 /* Settings.bundle in Resources */,
 				852FC5A3282461DF00EA034E /* LaunchScreen.storyboard in Resources */,
 				852FC5A0282461DF00EA034E /* Assets.xcassets in Resources */,
 				852FC59E282461D500EA034E /* Main.storyboard in Resources */,
@@ -161,6 +171,8 @@
 				852FC599282461D500EA034E /* SceneDelegate.swift in Sources */,
 				852FC5AB2826340600EA034E /* TableViewController.swift in Sources */,
 				85960090283386ED002C0E24 /* Game.swift in Sources */,
+				859600942836CB46002C0E24 /* Reachability.swift in Sources */,
+				8596009228362CA8002C0E24 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

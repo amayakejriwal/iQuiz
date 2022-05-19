@@ -14,13 +14,9 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("TABLE VIEW CONTROLLER LOADED")
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -43,7 +39,7 @@ class TableViewController: UITableViewController {
         // cell.detailTextLabel?.text = "this is where the description goes"
         
         // the image for the cell
-        cell.imageView?.image = UIImage(named: "\(models[indexPath.row].0)")
+        // cell.imageView?.image = UIImage(named: "\(models[indexPath.row].0)")
         
         return cell
     }
