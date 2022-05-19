@@ -9,6 +9,7 @@ import UIKit
 
 protocol newURLDelegate {
     func newURL(url: String)
+    func getData()
 }
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
@@ -40,7 +41,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             // self.dismiss(animated: true, completion: {})
             
         } else if newURL == "" { // nothing has been entered in the box
-            self.dismiss(animated: true, completion: nil)
+            delegate?.getData()
+            //self.dismiss(animated: true, completion: nil)
         } else {
             // show an alert that the URL entered was invalid
             let alert = UIAlertController(title: "Error", message: "Invalid URL. Please make sure your URL includes https://.", preferredStyle: .alert)

@@ -55,6 +55,7 @@ class ViewController: UIViewController {
     }
     
     func getOfflineQuizData() {
+        print("getting offline quiz data")
         if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
                                                             in: .userDomainMask).first {
             let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
@@ -69,44 +70,48 @@ class ViewController: UIViewController {
     }
     
     func getQuizData() {
-        let url = URL(string: self.urlAddress)
-        let task = URLSession.shared.dataTask(with: url!) {
-            (data, response, error) in guard let data = data else {
-                print("Data is nil :(")
-                return
-            }
-            if response != nil {
-                if (response! as! HTTPURLResponse).statusCode % 100 == 5 {
-                    print("Server Error")
+        if Network.reachability.isReachable {
+            let url = URL(string: self.urlAddress)
+            let task = URLSession.shared.dataTask(with: url!) {
+                (data, response, error) in guard let data = data else {
+                    print("Data is nil :(")
+                    return
                 }
-                if (response! as! HTTPURLResponse).statusCode != 200 {
-                    print("Something went wrong: \(String(describing: error))")
-                }
-            }
-            do {
-                let info = try JSONDecoder().decode(Subject.self, from: data)
-                self.jsonText = info
-                
-                // save to a local file
-                if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
-                                                                    in: .userDomainMask).first {
-                    let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
-                    do {
-                        try data.write(to: pathWithFilename)
-                    } catch {
-                        print("There was an error writing to a local file: \(error)")
+                if response != nil {
+                    if (response! as! HTTPURLResponse).statusCode % 100 == 5 {
+                        print("Server Error")
+                    }
+                    if (response! as! HTTPURLResponse).statusCode != 200 {
+                        print("Something went wrong: \(String(describing: error))")
                     }
                 }
-            } catch {
-                print("Something went wrong: \(error)")
+                do {
+                    let info = try JSONDecoder().decode(Subject.self, from: data)
+                    self.jsonText = info
+                    
+                    // save to a local file
+                    if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                                        in: .userDomainMask).first {
+                        let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
+                        do {
+                            try data.write(to: pathWithFilename)
+                        } catch {
+                            print("There was an error writing to a local file: \(error)")
+                        }
+                    }
+                } catch {
+                    print("Something went wrong: \(error)")
+                }
+                
+                DispatchQueue.main.async {
+                    print("url used: \(self.urlAddress)")
+                    print("JSON: \(self.jsonText)")
+                }
             }
-            
-            DispatchQueue.main.async {
-                print("url used: \(self.urlAddress)")
-                print("JSON: \(self.jsonText)")
-            }
+            task.resume()
+        } else {
+            self.getOfflineQuizData()
         }
-        task.resume()
     }
     
     @objc func showQuizQuestions(_ quizTopic : String) {
@@ -143,7 +148,7 @@ class ViewController: UIViewController {
     
     
     
-    @IBAction func settingsTouchUpInside(_ sender: Any) {        
+    @IBAction func settingsTouchUpInside(_ sender: Any) {
         guard let svc = storyboard?.instantiateViewController(identifier: "SettingsVC", creator: { coder in
             return SettingsViewController(coder: coder)
         }) else {
@@ -185,7 +190,6 @@ class ViewController: UIViewController {
         
         print("CALLED VIEW DID LOAD")
         self.urlAddress = "http://tednewardsandbox.site44.com/questions.json"
-        // print("URL: \(urlAddress)")
         // Do any additional setup after loading the view.
 
         // checking network
@@ -207,6 +211,12 @@ extension ViewController: newURLDelegate {
     func newURL(url: String) {
         self.dismiss(animated: true) {
             self.urlAddress = url
+            self.getQuizData()
+        }
+    }
+    
+    func getData() {
+        self.dismiss(animated: true) {
             self.getQuizData()
         }
     }
