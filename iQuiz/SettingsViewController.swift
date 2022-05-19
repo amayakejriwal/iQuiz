@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol newURLDelegate {
+    func newURL(url: String)
+}
+
 class SettingsViewController: UIViewController, UITextFieldDelegate {
 
+    var delegate: newURLDelegate?
+    
     @IBOutlet weak var urlTextFieldOutlet: UITextField!
     
     required init?(coder: NSCoder) {
@@ -30,26 +36,18 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         let newURL = self.urlTextFieldOutlet.text
         if self.verifyUrl(newURL) {
             // the new URL is valid, should change
-            // self.performSegue(withIdentifier: "mainVC", sender: self)
-            // self.dismiss(animated: true, completion: nil)
+            delegate?.newURL(url: newURL!)
+            // self.dismiss(animated: true, completion: {})
             
-            // creating the main view controller again
-            
-            let mvc = ViewController()
-            mvc.urlAddress = newURL!
-            self.dismiss(animated: true, completion: nil)
-             //self.present(mvc, animated: true)
-            
-        } else if newURL == "" {
+        } else if newURL == "" { // nothing has been entered in the box
             self.dismiss(animated: true, completion: nil)
         } else {
             // show an alert that the URL entered was invalid
             let alert = UIAlertController(title: "Error", message: "Invalid URL. Please make sure your URL includes https://.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Exit Settings",
+                    alert.addAction(UIAlertAction(title: "OK",
                                                   style: .default,
                                                   handler: { _ in NSLog("\"OK\" pressed.")
-                        // dismiss this view
-                            self.dismiss(animated: true, completion: nil)
+
                     }))
                     self.present(alert, animated: true, completion: {
                       NSLog("The completion handler fired")
@@ -68,24 +66,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.urlTextFieldOutlet.delegate = self
+        self.urlTextFieldOutlet.placeholder = "URL"
 
         // Do any additional setup after loading the view.
     }
-    
-
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-        if(segue.identifier == "InputVCToDisplayVC") {
-            let mainVC = segue.destination as! ViewController
-            mainVC.urlAddress = urlTextFieldOutlet.text!
-        }
-    }
-    
-
 }

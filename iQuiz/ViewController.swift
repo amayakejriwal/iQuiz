@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var questions : [String] = []
     var answer : [String] = []
     var answerChoices : [[String]] = []
-    var urlAddress : String = UserDefaults.standard.string(forKey: "URL") ?? "http://tednewardsandbox.site44.com/questions.json"
+    public var urlAddress : String = UserDefaults.standard.string(forKey: "URL") ?? "http://tednewardsandbox.site44.com/questions.json"
     
     // MARK: - WelcomeElement
     struct SubjectElement: Codable {
@@ -81,9 +81,6 @@ class ViewController: UIViewController {
                 }
                 if (response! as! HTTPURLResponse).statusCode != 200 {
                     print("Something went wrong: \(String(describing: error))")
-                    self.viewDidLoad()
-                    return
-                    
                 }
             }
             do {
@@ -146,24 +143,14 @@ class ViewController: UIViewController {
     
     
     
-    @IBAction func settingsTouchUpInside(_ sender: Any) {
-        // V1: Show the user an alert
-//        let alert = UIAlertController(title: "Settings", message: "Settings go here.", preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "OK",
-//                                      style: .default,
-//                                      handler: { _ in NSLog("\"OK\" pressed.")
-//        }))
-//        self.present(alert, animated: true, completion: {
-//          NSLog("The completion handler fired")
-//        })
-        
-        // V2: present the settings VC modally
+    @IBAction func settingsTouchUpInside(_ sender: Any) {        
         guard let svc = storyboard?.instantiateViewController(identifier: "SettingsVC", creator: { coder in
             return SettingsViewController(coder: coder)
         }) else {
             fatalError("Failed to load SettingsViewController from storyboard.")
         }
-        present(svc, animated: true)
+        svc.delegate = self
+        navigationController?.present(svc, animated: true)
         
     }
     
@@ -213,5 +200,15 @@ class ViewController: UIViewController {
         getQuizData()
     }
 
+}
+
+extension ViewController: newURLDelegate {
+    
+    func newURL(url: String) {
+        self.dismiss(animated: true) {
+            self.urlAddress = url
+            self.getQuizData()
+        }
+    }
 }
 
