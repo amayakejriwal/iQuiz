@@ -10,7 +10,7 @@
 			<key>Title</key>
 			<string>URL</string>
 			<key>Key</key>
-			<string>name_preference</string>
+			<string>URL</string>
 			<key>DefaultValue</key>
 			<string>http://tednewardsandbox.site44.com/questions.json</string>
 			<key>IsSecure</key>

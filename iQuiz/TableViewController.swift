@@ -35,12 +35,6 @@ class TableViewController: UITableViewController {
         // the text for the cell
         cell.textLabel?.text = models[indexPath.row].0
         
-        // the description of the cell
-        // cell.detailTextLabel?.text = "this is where the description goes"
-        
-        // the image for the cell
-        // cell.imageView?.image = UIImage(named: "\(models[indexPath.row].0)")
-        
         return cell
     }
     

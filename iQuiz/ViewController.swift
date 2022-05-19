@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var questions : [String] = []
     var answer : [String] = []
     var answerChoices : [[String]] = []
-    var urlAddress : String = "http://tednewardsandbox.site44.com/questions.json"
+    var urlAddress : String = UserDefaults.standard.string(forKey: "URL") ?? "http://tednewardsandbox.site44.com/questions.json"
     
     // MARK: - WelcomeElement
     struct SubjectElement: Codable {
@@ -54,8 +54,21 @@ class ViewController: UIViewController {
         navigationController?.pushViewController(tvc, animated: true)
     }
     
+    func getOfflineQuizData() {
+        if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                            in: .userDomainMask).first {
+            let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
+            do {
+                let data = try Data(contentsOf: pathWithFilename)
+                let info = try JSONDecoder().decode(Subject.self, from: data)
+                self.jsonText = info
+            } catch {
+                print("There was an error writing to a local file: \(error)")
+            }
+        }
+    }
+    
     func getQuizData() {
-        // let urlAddress = "http://tednewardsandbox.site44.com/questions.json"
         let url = URL(string: self.urlAddress)
         let task = URLSession.shared.dataTask(with: url!) {
             (data, response, error) in guard let data = data else {
@@ -68,11 +81,6 @@ class ViewController: UIViewController {
                 }
                 if (response! as! HTTPURLResponse).statusCode != 200 {
                     print("Something went wrong: \(String(describing: error))")
-                    
-                    // reset the url to what we know will work:
-                    // self.urlAddress = "http://tednewardsandbox.site44.com/questions.json"
-                    // print("trying to reset url to: \(self.urlAddress)")
-                    // call the function again with a working link
                     self.viewDidLoad()
                     return
                     
@@ -80,15 +88,23 @@ class ViewController: UIViewController {
             }
             do {
                 let info = try JSONDecoder().decode(Subject.self, from: data)
-                // print(info)
                 self.jsonText = info
+                
+                // save to a local file
+                if let documentDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                                    in: .userDomainMask).first {
+                    let pathWithFilename = documentDirectory.appendingPathComponent("myJsonString.json")
+                    do {
+                        try data.write(to: pathWithFilename)
+                    } catch {
+                        print("There was an error writing to a local file: \(error)")
+                    }
+                }
             } catch {
                 print("Something went wrong: \(error)")
             }
             
             DispatchQueue.main.async {
-                //self.parseJson(json!)
-                //self.jsonText = json
                 print("url used: \(self.urlAddress)")
                 print("JSON: \(self.jsonText)")
             }
@@ -147,7 +163,6 @@ class ViewController: UIViewController {
         }) else {
             fatalError("Failed to load SettingsViewController from storyboard.")
         }
-        //navigationController?.pushViewController(svc, animated: true)
         present(svc, animated: true)
         
     }
@@ -160,6 +175,7 @@ class ViewController: UIViewController {
         print("Wifi:", Network.reachability.isReachableViaWiFi)
         
         if !Network.reachability.isReachable {
+            // alerting the user that they are offline
             let alert = UIAlertController(title: "Network Issue", message: "Could not connect to the network. Game will continue with stored data until it is back online.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK",
                                           style: .default,
@@ -168,6 +184,9 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: {
               NSLog("The completion handler fired")
             })
+            
+            // switching from online to offline quizzes
+            self.getOfflineQuizData()
         }
     }
     @objc func statusManager(_ notification: Notification) {
@@ -181,9 +200,6 @@ class ViewController: UIViewController {
         self.urlAddress = "http://tednewardsandbox.site44.com/questions.json"
         // print("URL: \(urlAddress)")
         // Do any additional setup after loading the view.
-        
-        // settings defaults
-        // let defaults = UserDefaults.standard
 
         // checking network
         NotificationCenter.default
